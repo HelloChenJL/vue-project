@@ -1,23 +1,40 @@
 import { createRouter,createWebHashHistory } from "vue-router";
-import Main from "@/components/Main.vue"
-import StorePage from "@/components/StorePage.vue"
+import Main from "@/components/pages/Main.vue"
+import Account from "@/components/pages/tabs/Account.vue"
+import Tab2 from "@/components/pages/tabs/Tab2.vue"
+import Shopping from "@/components/pages/tabs/Shopping.vue"
+import Home from "@/components/pages/tabs/Home.vue"
 export const router = createRouter({
   history:createWebHashHistory(),
   routes:[
     {
       path:"/",
       redirect:{
-        path:"/01"
+        path:"/main/home"
       }
 
     },
     {
-      path:"/01",
-      component:Main
-    },
-    {
-      path:"/store",
-      component:StorePage
+      path:"/main",
+      component:Main,
+      children:[
+        {
+          path:"home",
+          component:Home
+        },
+        {
+          path:"account",
+          component:Account
+        },
+        {
+          path:"shopping",
+          component:Shopping
+        },
+        {
+          path:"tab2",
+          component:Tab2
+        }
+      ]
     }
   ]
 })
