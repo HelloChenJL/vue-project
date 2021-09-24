@@ -1,11 +1,14 @@
 import { createRouter,createWebHashHistory } from "vue-router";
 import Main from "@/components/pages/Main.vue"
+import Search from "@/components/pages/Search.vue"
+import SearchResult from "@/components/pages/SearchResult.vue"
 import Account from "@/components/pages/tabs/Account.vue"
 import Tab2 from "@/components/pages/tabs/Tab2.vue"
 import Shopping from "@/components/pages/tabs/Shopping.vue"
 import Home from "@/components/pages/tabs/Home.vue"
+import VrRoom from "@/components/pages/VrRoom.vue"
 export const router = createRouter({
-  history:createWebHashHistory(),
+  history:createWebHashHistory(),//important 强制性必须要写的 
   routes:[
     {
       path:"/",
@@ -35,6 +38,18 @@ export const router = createRouter({
           component:Tab2
         }
       ]
+    },
+    {
+      path:"/search",
+      component:Search
+    },
+    {
+      path:"/searchresult",
+      component:SearchResult
+    },
+    {
+      path:"/vrroom",
+      component:VrRoom
     }
   ]
 })

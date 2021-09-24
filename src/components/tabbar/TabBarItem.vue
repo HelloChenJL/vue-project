@@ -16,7 +16,7 @@ import {useRouter,useRoute} from "vue-router"
   })
   const doActive = () => {
     if(route.path !== props.path){
-      console.log(11)
+      // console.log(11)
       //优化界面不用push每执行一次应给将路由取出来再push所以用replace比较好
       router.replace({path:props.path})
     }
