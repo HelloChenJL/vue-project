@@ -3,9 +3,10 @@ import TabBar from "@/components/tabbar/TabBar.vue"
 import TabBarItem from "@/components/tabbar/TabBarItem.vue"
 </script>
 <template>
+<div>
 <router-view></router-view>
   <tab-bar>
-    <tab-bar-item name="首页" path="/main/home">
+      <tab-bar-item name="首页" path="/main/home">
       <template v-slot:icon>
         <div class="iconfont icon-shouye" style="font-size:20px"></div>
       </template>
@@ -25,4 +26,5 @@ import TabBarItem from "@/components/tabbar/TabBarItem.vue"
       </template>
     </tab-bar-item>
   </tab-bar>
+  </div>
 </template>

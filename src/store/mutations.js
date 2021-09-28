@@ -1,5 +1,5 @@
 export const mutations = {
-  increment:(state)=>{
+  st:(state)=>{
     state.count++
   }
 }

@@ -1,15 +1,17 @@
 <script setup>
 import { SearchOutlined,EditOutlined } from '@ant-design/icons-vue';
 import {ref,watch} from 'vue';
-const emit = defineEmits(["focusHandle,searchContentChangeHandle"])
+const emit = defineEmits(["focusHandle","searchContentChangeHandle"])
 const props = defineProps({
-  edit:Boolean
+  edit:Boolean,//这个变量是一个状态位（一般都是布尔类型，0，1，2之类的简单类型 来区别输入框的显示状态）只要在父组件写了这个变量就代表他是true不写默认false
+  searchInput:String//输入框要显示的内容
+  
 })
 const focusFunc = ()=>{
   emit("focusHandle")
 }
+const searchContent = ref(props.searchInput ? props.searchInput : "")
 let timeoutId = null 
-const searchContent = ref("")
 watch(searchContent,(newVal,preVal)=>{  //定义一个定时器的编号
   //emit("searchContentChangeHandle",newVal)
   clearTimeout(timeoutId) //清空重置上一次的计时器
@@ -20,7 +22,8 @@ watch(searchContent,(newVal,preVal)=>{  //定义一个定时器的编号
 })
 </script>
 <template>
-  <div class="top-bar">
+  <div>
+    <div class="top-bar">
     <div class="left">
       <slot name="left"></slot>
     </div>
@@ -41,6 +44,7 @@ watch(searchContent,(newVal,preVal)=>{  //定义一个定时器的编号
     <div class="right">
       <slot name="right"></slot>
     </div>
+  </div>
   </div>
 </template>
 <style>

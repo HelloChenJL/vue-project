@@ -69,6 +69,8 @@ render()
 })
 </script>
 <template>
-<a-button @click="back">Back</a-button>
-<div ref="vr"></div>
+<div>
+  <a-button @click="back">Back</a-button>
+  <div ref="vr"></div>
+</div>
 </template>
