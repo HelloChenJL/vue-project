@@ -69,7 +69,7 @@ watch(searchContent,(newVal,preVal)=>{  //定义一个定时器的编号
 .ant-input-affix-wrapper{
   background-color: rgba(172, 172, 172, 0.1) !important;
   border: none !important;
-  border-radius: 7px !important;
+  border-radius: 15px !important;
 }
 .ant-input-affix-wrapper > input.ant-input{
   background-color:unset;

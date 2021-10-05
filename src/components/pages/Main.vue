@@ -6,7 +6,7 @@ import TabBarItem from "@/components/tabbar/TabBarItem.vue"
 <div>
 <router-view></router-view>
   <tab-bar>
-      <tab-bar-item name="首页" path="/main/home">
+    <tab-bar-item name="首页" path="/main/home">
       <template v-slot:icon>
         <div class="iconfont icon-shouye" style="font-size:20px"></div>
       </template>

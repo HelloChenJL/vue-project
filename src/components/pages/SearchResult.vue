@@ -1,9 +1,11 @@
 <script setup>
 import {ref} from "vue"
- import {useRoute} from "vue-router"
- import {useRouter} from "vue-router"
- import {useStore} from "vuex"
- import TopBar from "@/components/topbar/TopBar.vue"
+import {useRoute} from "vue-router"
+import {useRouter} from "vue-router"
+import {useStore} from "vuex"
+import TopBar from "@/components/topbar/TopBar.vue"
+import MyContent from "@/components/content/MyContent.vue"  
+
   
  const route = useRoute();
  const router = useRouter();
@@ -26,7 +28,7 @@ const search = ()=>{
  }
 
 const route_param_searchContent = route.query.searchContent;
- const initData = (content)=>{
+const initData = (content)=>{
    console.log("调用后台搜索方法的参数",content)
 
    const resData = [1,2,3,4,5] //假设从网络返回的数据
@@ -46,7 +48,7 @@ const route_param_searchContent = route.query.searchContent;
       <div class="iconfont icon-sousuo" @click="search" style="font-size:24px"></div>
     </template>
   </top-bar>
-  <div style="padding:20px;box-sizing:border-box;">
+  <my-content hasTabBar>
     <div style="color:rgb(0 0 0 / 0.5); font-size:15px;font-weight:500">有{{data.length}}个是商品符合要求</div>
     <a-list :data-source="data">
       <template #renderItem="{item,index}">
@@ -55,7 +57,7 @@ const route_param_searchContent = route.query.searchContent;
         </a-list-item>
       </template>
     </a-list>
-  </div>
+  </my-content>
   searchresult page
   </div>
 </template>

@@ -4,6 +4,7 @@
   import TopBar from "@/components/topbar/TopBar.vue"
   import {ref,inject} from "vue"
   import {setArray,getArray,clearItem} from "@/kits/LocalStorageKit.ts";
+  import MyContent from "@/components/content/MyContent.vue"  
   const message = inject("$message")
   const router = useRouter()
   const store = useStore()
@@ -66,7 +67,6 @@
   }
 </script>
 <template>
-  <div>
     <top-bar @searchContentChangeHandle="searchContentChange" edit>
     <template v-slot:left>
       <div class="iconfont icon-fanhui1" @click="back" style="font-size:24px"></div>
@@ -75,7 +75,7 @@
       <div class="iconfont icon-sousuo" @click="goSearch" style="font-size:24px"></div>
     </template>
   </top-bar>
-  <div style="padding:20px;box-sizing:boder-box;">
+  <my-content hasTabBar>
     <div style="display:flex;justify-content:space-between;">
       <div style="color:rgb(0 0 0 /0.5);font-size:14px">最近搜索</div>
       <div style="color:#b620e0;font-size:14px" @click="clearHistory">清空</div>
@@ -83,8 +83,8 @@
     <div class="history-search-content">
       <div @click="searchByHistory(item)" class="history-search-item" v-for="(item,index) in historySearch" :key="index+item">{{item}}</div>
     </div>
-  </div>
-  </div>
+  </my-content>
+
 </template>
 <style scoped>
 .history-search-content{
