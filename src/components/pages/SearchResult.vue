@@ -35,7 +35,14 @@ const initData = (content)=>{
    data.value = resData
  }
  initData(route_param_searchContent);
-
+ //模拟一个网络请求，返回结果
+const refresh = function (){
+    return new Promise((resolve,reject)=>{
+       setTimeout(()=>{
+        resolve(true)
+       },800)
+    })
+}
 
 </script>
 <template>  
@@ -48,7 +55,7 @@ const initData = (content)=>{
       <div class="iconfont icon-sousuo" @click="search" style="font-size:24px"></div>
     </template>
   </top-bar>
-  <my-content hasTabBar>
+  <my-content hasTabBar :refreshFunc = "refresh">
     <div style="color:rgb(0 0 0 / 0.5); font-size:15px;font-weight:500">有{{data.length}}个是商品符合要求</div>
     <a-list :data-source="data">
       <template #renderItem="{item,index}">

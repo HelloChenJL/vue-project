@@ -52,7 +52,7 @@ watch(()=>route.path,(to,from)=>{
 .fold-left-leave-active {
   position: fixed;
   height: 100vh;
-  width: 100%;
+  width: 100vw;
   animation-name: fold-left-out;
   animation-duration: 0.5s;
 }
@@ -80,14 +80,14 @@ watch(()=>route.path,(to,from)=>{
 .fold-right-enter-active{
   position: fixed;
   height: 100vh;
-  width: 100%;
+  width: 100vw;
   animation-name: fold-right-in;
   animation-duration: .5s;
 }
 .fold-right-leave-active{
   position: fixed;
   height: 100vh;
-  width: 100%;
+  width: 100vw;
   animation-name: fold-right-out;
 
 }

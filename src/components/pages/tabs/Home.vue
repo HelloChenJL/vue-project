@@ -88,7 +88,14 @@ const moreContentStyle = computed(()=>{
         }
     }
 })
-
+//模拟一个网络请求，返回结果
+const refresh = function (){
+    return new Promise((resolve,reject)=>{
+       setTimeout(()=>{
+        resolve(true)
+       },800)
+    })
+}
 const wrapper = ref(null)
 const List = ref(null)
 const wrapper_bs = ref(null)
@@ -170,7 +177,7 @@ const go = path => {
             <div class="iconfont icon-gouwuche1" style="font-size:24px" ></div>
         </template>
     </top-bar>
-    <my-content ref="refId" hasTabBar>
+    <my-content ref="refId" hasTabBar :refreshFunc="refresh">
         <a-carousel >
             <div v-for="(item,index) in homeImgs" :key="index+item">
                 <h3 class="carousel-title">{{index+1}}</h3>
