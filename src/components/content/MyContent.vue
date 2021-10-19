@@ -4,6 +4,7 @@ import {ref,onMounted, proxyRefs} from "vue"
  const props = defineProps({
   //  设置一个状态位，有tabbar的话就是一级页面，没有的话就是非一级页面
    hasTabBar:Boolean,
+   pull:Boolean,//一个状态位，当标签里写了就会有加载功能不写默认false
    //加载的自调用父的传值，不用emit会更好一点用props穿个函数
    refreshFunc:{
      type:Function,
@@ -31,6 +32,8 @@ import {ref,onMounted, proxyRefs} from "vue"
 let touchstart = 0,  // 记录手指第一次碰屏幕时的y轴距离
     distance = 0;    // 手指y轴滑动距离
 onMounted(()=>{
+  if(props.pull){
+    
   //这里就是钩子函数中的代码
   const content = contentRef.value;//拿到末班中的标签节点
   // console.log(content)
@@ -44,12 +47,23 @@ onMounted(()=>{
   content.addEventListener("touchstart",function(e){
     // 监听手指刚触碰时候的content的一些属性
     // console.log(e)
+    //防止手段：以防用户在下拉未完成时候又刷新,拿loading状态位进行判断
+    if(loading.value){
+      // e.preventDefault();//阻止捕获时间、默认事件
+      e.stopPropagation();//阻止冒泡事件
+      return
+    }
     touchstart = e.targetTouches[0].clientY
-    console.log(touchstart)
-  },{passive:false})
+    // console.log(touchstart)
+  },{passive:false})//阻止冒泡时间
   content.addEventListener("touchmove",function(e){
     // 监听手指刚触碰屏幕移动的纵向距离
     // console.log(e)
+     if(loading.value){
+      e.preventDefault();//阻止捕获时间、默认事件
+      // e.stopPropagation();//阻止冒泡事件
+      return
+    }
     if(touchstart <= 0){ return }
     const touch = e.targetTouches[0]
     //不等于0说明没往下滑动所以什么也不用做
@@ -67,12 +81,13 @@ onMounted(()=>{
     }
   },{passive:false})
   content.addEventListener("touchend",function(e){
+   
     if(distance === 0) { return }
     if(distance > 0) {
       msg.value = "正在加载"
       // 父组件中的网络请求 ，网络请求是异步，Promise一般是封装异步方法的
       props.refreshFunc().then((res) => {
-        console.log(res)
+        // console.log(res)
         res ? msg.value = "加载成功" : msg.value = "加载失败"
         setTimeout(() => {
             // 下面的代码全部都是重置归零的代码
@@ -85,6 +100,7 @@ onMounted(()=>{
       })
     }
     },{passive:false})
+  }
 })
 </script>
 <template>

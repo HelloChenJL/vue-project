@@ -5,6 +5,8 @@ import Input from "ant-design-vue/lib/input";
 import message from "ant-design-vue/lib/message";
 import List from "ant-design-vue/lib/list";
 import Carousel from "ant-design-vue/lib/carousel";
+import Avatar from "ant-design-vue/lib/avatar";
+import Spin from "ant-design-vue/lib/spin";
 import "ant-design-vue/dist/antd.css";
 export const useAntd = (app)=>{
   message.config({
@@ -15,4 +17,6 @@ export const useAntd = (app)=>{
   app.use(Input)
   app.use(List)
   app.use(Carousel)
+  app.use(Avatar)
+  app.use(Spin)
 }

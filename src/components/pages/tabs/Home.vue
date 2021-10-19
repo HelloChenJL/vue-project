@@ -6,78 +6,45 @@ import BScroll from "@better-scroll/core"
 import TopBar from "@/components/topbar/TopBar.vue";
 import MyContent from "@/components/content/MyContent.vue"
 import ProductCard from "@/components/product/ProductCard.vue"
+import {Gql,ImgUrl} from "@/kits/HttpKit.ts"
 const store = useStore()
 const router = useRouter()
-const homeImgs = ref([
-    "src/assets/imgs/home01.png",
-    "src/assets/imgs/home02.png",
-    "src/assets/imgs/home03.png"
-])
+const homeImgs = ref([])
 //商品卡片部分
-const products = ref([
-   {
-        id:1,
-        name:"shoes1",
-        price:"1000",
-        imgPath:"src/assets/imgs/shoe01.png"
-    },
-   {
-        id:2,
-        name:"shoes2",
-        price:"2000",
-        imgPath:"src/assets/imgs/shoe02.png"
-    },
-   {
-        id:3,
-        name:"shoes3",
-        price:"3000",
-        imgPath:"src/assets/imgs/shoe03.png"
-    },
-])
-const products2 = ref([
-   {
-        id:1,
-        name:"shoes1",
-        price:"1000",
-        imgPath:"src/assets/imgs/c02.png"
-    },
-   {
-        id:2,
-        name:"shoes2",
-        price:"2000",
-        imgPath:"src/assets/imgs/c03.png"
-    },
-   {
-        id:3,
-        name:"shoes3",
-        price:"3000",
-        imgPath:"src/assets/imgs/c04.png"
-    },
-])
+const products = ref([])
+
+// 初始时伪造数据，用来支撑better-scroll的动态算宽度
+const mockProductCardList = () => {
+    for(let item of [1,2,3]){
+        products.value.push({
+            id:item,
+            name:"产品名称",
+            price:0
+        })
+    }
+}
+mockProductCardList();
+
 const moreContent = [
     {
         name:"爆款",
-        backgroundColor:"#f9beadd",
+        backgroundColor:"#F9bead",
         fontColor:"#d84933",
-
     },
     {
         name:"特价",
         backgroundColor:"#fbd96d",
-        fontColor:"#d84933",
-
+        fontColor:"#b68800",
     },
     {
-        name:"爆款",
-        backgroundColor:"#fdf8ea",
-        fontColor:"#d84933",
-
+        name:"二手",
+        backgroundColor:"#dff8ea",
+        fontColor:"#08a963",
     },
     {
-        name:"爆款",
+        name:"拼一拼",
         backgroundColor:"#b1eafd",
-        fontColor:"#d84933",
-
+        fontColor:"#185162",
     },
 ]
 const moreContentStyle = computed(()=>{
@@ -89,13 +56,14 @@ const moreContentStyle = computed(()=>{
     }
 })
 //模拟一个网络请求，返回结果
-const refresh = function (){
-    return new Promise((resolve,reject)=>{
-       setTimeout(()=>{
-        resolve(true)
-       },800)
-    })
-}
+// const refresh = function (){
+//     return new Promise((resolve,reject)=>{
+//        setTimeout(()=>{
+//         resolve(true)
+//        },800)
+//     })
+// }
+const count = ref(0)      // proxy { {value:0} }
 const wrapper = ref(null)
 const List = ref(null)
 const wrapper_bs = ref(null)
@@ -110,7 +78,7 @@ onMounted(()=>{
     let itemWidth = 138;
     let margin = 15;
     // 计算需要的宽度
-    let width = (itemWidth+margin) * products2.value.length-margin;
+    let width = (itemWidth+margin) * products.value.length-margin;
     console.log(width);
     // 给内容定义宽度
     List_div.style.width = width +"px" ;
@@ -167,6 +135,44 @@ const go = path => {
 //         passive:false
 //     })
 // })
+const refresh = () => initData()
+
+const initData = async () => {
+    let t = '["03","04"]'
+    const start = 0;
+    const count = 5;
+    const gql = {
+        query:`
+           {
+                homeImgs
+                goods(start:${start},count:${count}) {
+                id
+                name
+                price
+                imgpath
+                type {
+                id
+                }
+            }
+            }
+        `
+    }
+    try {
+        const res = await Gql(gql)
+        res.data.goods.map(item => {
+            item.imgpath = ImgUrl + item.imgpath
+            return item
+        })
+        homeImgs.value = res.data.homeImgs;
+        products.value = res.data.goods;
+        console.log("scuccess")
+        return true
+    } catch (error) {
+        return false
+    }
+}
+
+initData();
 </script>
 
 <template>
@@ -177,7 +183,7 @@ const go = path => {
             <div class="iconfont icon-gouwuche1" style="font-size:24px" ></div>
         </template>
     </top-bar>
-    <my-content ref="refId" hasTabBar :refreshFunc="refresh">
+    <my-content pull ref="refId" hasTabBar :refreshFunc="refresh">
         <a-carousel >
             <div v-for="(item,index) in homeImgs" :key="index+item">
                 <h3 class="carousel-title">{{index+1}}</h3>
@@ -204,7 +210,7 @@ const go = path => {
             <!-- 这里需要将循环的内容包裹，因为betterscroll默认处理容器的（wrapper）的第一个子元素（content）
             的滚动，其他元素都会被忽略 -->
             <div ref="List" class="List"> 
-                <product-card v-for="(item,index) in products2" :product="item" :key="index" style=" flex-shrink:0;margin-right:15px;"></product-card>
+                <product-card v-for="(item,index) in products" :product="item" :key="index" style=" flex-shrink:0;margin-right:15px;"></product-card>
             </div>
         </div>
         <!-- 。总结对比
@@ -215,9 +221,6 @@ const go = path => {
                 <div class="card_bs" :style="moreContentStyle(item)" v-for="(item,index) in moreContent" :key="index+item.name">{{item.name}}</div>
             </div>
         </div>
-        <!-- <a-button style="margin-top:10px;" @click="back">返回</a-button> -->
-        <!-- <a-button @click="go('/vrroom')">VR全景</a-button> -->
-        <!-- <div>home</div> -->
     </my-content>
 </div>
 </template>

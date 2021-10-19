@@ -9,7 +9,7 @@ import ProductCard from "@/components/product/ProductCard.vue";
 const route = useRoute();
 const router = useRouter();
 const store = useStore();
-
+const type = route.query.type;
 let searchContent = "";
 const data = ref([]);
 const loading = ref(false);
@@ -24,6 +24,7 @@ const searchContentChange = (content) => {
   // console.log("现在时searchResult页面了",content)
   searchContent = content;
 };
+
 const router_param_searchContent = route.query.searchContent;
 const products = [
   {
@@ -71,10 +72,55 @@ const products = [
     },
     imgPath: "src/assets/imgs/shoe10.png",
   },
+  {
+    id: 6,
+    name: "衣服1",
+    price: "1001",
+    type: {
+      id: "04",
+    },
+    imgPath: "src/assets/imgs/c01.png",
+  },
+  {
+    id: 7,
+    name: "衣服2",
+    price: "1002",
+    type: {
+      id: "04",
+    },
+    imgPath: "src/assets/imgs/c02.png",
+  },
+  {
+    id: 8,
+    name: "衣服3",
+    price: "1003",
+    type: {
+      id: "04",
+    },
+    imgPath: "src/assets/imgs/c03.png",
+  },
+  {
+    id: 9,
+    name: "衣服4",
+    price: "1004",
+    type: {
+      id: "04",
+    },
+    imgPath: "src/assets/imgs/c04.png",
+  },
+  {
+    id: 10,
+    name: "衣服5",
+    price: "1005",
+    type: {
+      id: "04",
+    },
+    imgPath: "src/assets/imgs/c05.png",
+  },
 ];
 
-const initData = (content) => {
-  console.log("调用后台搜索方法的参数:", content);
+const searchData = (type, content) => {
+  console.log("调用后台搜索方法的参数:", type);
   // 待实现
   // http.post("http://api",{
   //     searchContent : router_param_searchContent
@@ -82,16 +128,20 @@ const initData = (content) => {
 
   // })
   //  resData => [{},{},{}]
-  const resData = products; //假设是从网络返回的数据
+  const resData = content //假设是从网络返回的数据
+    ? products.filter(
+        (item) => item.type.id === type && item.name.indexOf(content) >= 0
+      )
+    : products.filter((item) => item.type.id === type);
   data.value = resData;
 };
 
-// 将从上一个页面拿到的搜索内容router_param_searchContent ，调用后台api进行搜索
-initData(router_param_searchContent);
+// 将从上一个页面拿到的搜索类别type ，调用后台api进行搜索
+searchData(type);
 
 const search = () => {
   console.log("本次搜索的新内容:", searchContent);
-  initData(searchContent);
+  searchData(type, searchContent);
 };
 
 const refresh = () => {
@@ -106,8 +156,9 @@ const loadMore = () => {
   // loading.value = true;
   loadingMore.value = true;
   setTimeout(() => {
-    // 获取到产内容加载时候在显示一遍
-    data.value = data.value.concat(products);
+    data.value = data.value.concat(
+      products.filter((item) => item.type.id === type)
+    );
     // loading.value = false;
     loadingMore.value = false;
   }, 900);

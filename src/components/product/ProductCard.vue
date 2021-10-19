@@ -7,8 +7,8 @@ import {computed} from "vue"
 const imgStyle = computed(()=>{
   //对图片进行判断有的话选这个路劲没有的话这个块也存在不能消失
   //想要省去return的话则将返回的东西用小括号括起来
-  return props.product.imgPath && props.product.imgPath !== '' ?{
-    backgroundImage:`url(${props.product.imgPath})`,
+  return props.product.imgpath && props.product.imgpath !== '' ?{
+    backgroundImage:`url(${props.product.imgpath})`,
     // 图片的尺寸以及摆放位置，静态的
     backgroundSize:"cover"
   }: ""

@@ -7,6 +7,7 @@ import Tab2 from "@/components/pages/tabs/Tab2.vue"
 import Shopping from "@/components/pages/tabs/Shopping.vue"
 import Home from "@/components/pages/tabs/Home.vue"
 import VrRoom from "@/components/pages/VrRoom.vue"
+import GoodsCategory from "@/components/pages/GoodsCategory.vue"
 export const router = createRouter({
   history:createWebHashHistory(),//important 强制性必须要写的 
   routes:[
@@ -50,6 +51,10 @@ export const router = createRouter({
     {
       path:"/vrroom",
       component:VrRoom
-    }
+    },
+    {
+      path:"/goodscategory",
+      component:GoodsCategory
+    },
   ]
 })
